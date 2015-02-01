@@ -1,0 +1,72 @@
+---
+
+- name: Install base packages
+  hosts: all
+  user: "{{ user }}"
+  sudo: yes
+
+  tasks:
+
+    # EL7 plays
+    
+    - name: Install libselinux-python package
+      when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat" )
+      yum: name=libselinux-python state=installed
+    
+    - name: set selinux to permissive
+      when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat" )
+      selinux: policy=targeted state=permissive
+    
+    - name: install epel (EL7)
+      shell: rpm -ivh http://mirrors.mit.edu/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+      when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat" ) and ansible_distribution_major_version == "7"
+      ignore_errors: true
+      register: command_result
+      changed_when: command_result.rc == 0
+      failed_when: "'error: ' in command_result.stderr"
+    
+    - name: install epel (EL6)
+      shell: rpm -ivh http://mirror.nexcess.net/epel/6/i386/epel-release-6-8.noarch.rpm
+      when: ((ansible_distribution == "CentOS" or ansible_distribution == "RedHat" ) and ansible_distribution_major_version == "6")
+      ignore_errors: true
+      register: command_result
+      changed_when: command_result.rc == 0
+      failed_when: "'error: ' in command_result.stderr"
+    
+    - name: Install packages from default repos
+      when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat" )
+      yum: name={{ item.name }} state=present
+      with_items:
+        - { name: 'sysstat' }
+        - { name: 'htop' }
+        - { name: 'atop' }
+        - { name: 'strace' }
+        - { name: 'lsof' }
+        - { name: 'ntp' }
+        - { name: 'ntpdate' }
+        - { name: 'ntp-doc' }
+        - { name: 'vim' }
+        - { name: 'nc' }
+        - { name: 'telnet' }
+        - { name: 'tmux' }
+        - { name: 'wget' }
+        - { name: 'unzip' }
+        - { name: 'mlocate' }
+        - { name: 'openssh-clients' }
+        - { name: 'git' }
+    
+    ## still need to update the collectd template
+    #- name: Install collectd
+    #  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat" ) and ansible_distribution_major_version == "7"
+    #  yum: name="collectd" state=present
+    #
+    #- name: Install collectd template
+    #  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat" ) and ansible_distribution_major_version == "7"
+    #  template: src=collectd_ec2.conf.j2 dest=/etc/collectd.conf
+    #
+    #- name: Start/enable collectd
+    #  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat" ) and ansible_distribution_major_version == "7"
+    #  service: name=collectd state=started enabled=true
+    
+    - name: Start/enable ntpd
+      service: name=ntpd state=started enabled=true

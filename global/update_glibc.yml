@@ -1,0 +1,32 @@
+---
+
+- name: CVE-2015-0235: Update glibc
+  hosts: all
+  user: "{{ user }}"
+  sudo: yes
+
+  tasks:
+
+   # EL7 plays
+   - name: update glibc on EL
+     sudo: true
+     when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
+     yum: name=glibc state=latest
+     notify:
+       - reboot server
+
+   - name: latest yum activity
+     sudo: true
+     when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
+     command: tail -50 /var/log/yum.log
+     register: yum_log
+  
+   - debug: msg="{{ yum_log.stdout }}"
+     when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
+
+
+  handlers:
+    - name: reboot server
+      sudo: true
+      command: shutdown -r now "Ansible rebooting for glibc update to fix CVE-2015-0235"
+      register: reboot_err

@@ -1,0 +1,11 @@
+---
+
+- name: Update authorized keys file
+  hosts: all
+  user: "{{ user }}"
+
+  tasks:
+
+   - name: add authorized key from {{ src_key_file }}
+     authorized_key: key="{{ lookup('file', src_key_file) }}" user={{ ansible_env.USER }} state=present
+

@@ -1,0 +1,13 @@
+---
+
+- name: whoami
+  hosts: all
+  user: "{{ user }}"
+
+  tasks:
+    
+    - name: whoami
+      command: "whoami"
+      register: result
+
+    - debug: var={{ result.stdout }}
