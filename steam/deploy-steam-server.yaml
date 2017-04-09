@@ -57,6 +57,8 @@
       shell: cd /home/steam/steam; tar xvf steamcmd_linux.tar.gz
 
     # install steam games
-    - debug: var=games
+    - debug: var=games_dict[item]
+      with_items:
+        - games.split(',')
       when: games is defined
 
