@@ -11,6 +11,7 @@
   user: root
 
   vars:
+    test_var: 42
     games_dict:
       squad: 403240
       hellion: 598850
@@ -19,7 +20,7 @@
   tasks:
 
     # verify base packages are installed
-#    - include: 
+#    - include:
 
     - name: install necessary packages
       yum:
@@ -57,8 +58,6 @@
       shell: cd /home/steam/steam; tar xvf steamcmd_linux.tar.gz
 
     # install steam games
-    - debug: var=games_dict[item]
-      with_items:
-        - games.split(',')
-      when: games is defined
-
+#    - debug: msg="Install Steam App ID {{ games_dict[item] }}"
+#      when: games is defined
+#      with_items: "{{ games.split(',') }}"
