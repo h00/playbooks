@@ -26,7 +26,7 @@
     # create update script for games
     - name: Create update script for games
       template: 
-        src: template/steam/update-server.sh.j2
+        src: templates/steam/update-server.sh.j2
         dest: /home/steam/steam/update-{{ item }}.sh
         owner: steam
         group: steam

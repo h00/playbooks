@@ -58,6 +58,15 @@
     - name: Unpackage steam files
       shell: cd /home/steam/steam; tar xvf steamcmd_linux.tar.gz
 
+    # set permissions on steam files
+    - name: Set permissions on steam files
+      file:
+        path: /home/steam/steam
+        state: directory
+        owner: steam
+        group: steam
+        recursive: yes    
+
     # install steam games
 #    - debug: msg="Install Steam App ID {{ games_dict[item] }}"
 #      when: games is defined
