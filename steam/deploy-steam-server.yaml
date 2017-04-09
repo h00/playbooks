@@ -18,15 +18,16 @@
 
   tasks:
 
+    # verify base packages are installed
 #    - include: 
 
     - name: install necessary packages
       service:
-        name: {{ item }}
+        name: "{{ item }}"
         state: installed
-        with_item:
-          - glibc.i686
-          - libgcc.i686
+      with_items:
+        - glibc.i686
+        - libgcc.i686
 
     # create steam user
     - name: Create steam user
