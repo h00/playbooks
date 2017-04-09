@@ -1,1 +1,1 @@
-./steamcmd.sh +login anonymous +force_install_dir games/{{ item }}_{{ games_dict[item] }} +app_update {{ games_dict[item] }} validate +exit
+/home/steam/steam/steamcmd.sh +login anonymous +force_install_dir games/{{ item }}_{{ games_dict[item] }} +app_update {{ games_dict[item] }} validate +exit
