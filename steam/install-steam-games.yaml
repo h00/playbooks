@@ -7,6 +7,7 @@
   user: root
 
   vars:
+    start_servers: false
     games_dict:
       squad: 403240
       hellion: 598850
@@ -32,3 +33,12 @@
         group: steam
         mode: 0755
       with_items: "{{ games.split(',') }}"
+
+    # install/update game
+    # successful install = Success! App '403240' fully installed.
+    - name: Install/Update games
+      shell: /home/steam/steam/update-{{ item }}.sh
+      register: install_games
+      with_items: "{{ games.split(',') }}"
+
+    - debug: var=install_games
