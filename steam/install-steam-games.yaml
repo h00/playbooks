@@ -1,0 +1,22 @@
+#
+
+---
+
+- name: Install Steam Game
+  hosts: "*steam-servers"
+  user: root
+
+  vars:
+    games_dict:
+      squad: 403240
+      hellion: 598850
+      7days: 294420
+
+  tasks:
+
+    # install game dir
+    - name: Create Game Directory
+      file:
+        path: /home/steam/steam/games/{{ item }}
+        state: directory
+      with_items: "{{ games.split(',') }}"
