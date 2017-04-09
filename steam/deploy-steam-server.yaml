@@ -38,7 +38,7 @@
     # create steam dir
     - name: Create steam directory
       file:
-        path: /home/steam/steam
+        path: /home/steam/steam/games
         state: directory
         mode: 0755
 
