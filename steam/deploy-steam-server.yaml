@@ -24,7 +24,7 @@
     - name: install necessary packages
       service:
         name: "{{ item }}"
-        state: installed
+        state: present
       with_items:
         - glibc.i686
         - libgcc.i686
