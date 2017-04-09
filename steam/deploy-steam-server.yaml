@@ -22,9 +22,9 @@
 #    - include: 
 
     - name: install necessary packages
-      service:
+      yum:
         name: "{{ item }}"
-        state: present
+        state: installed
       with_items:
         - glibc.i686
         - libgcc.i686
