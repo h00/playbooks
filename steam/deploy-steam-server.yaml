@@ -20,7 +20,7 @@
   tasks:
 
     # verify base packages are installed
-#    - include:
+    - include: install-base-packages.yaml
 
     - name: install necessary packages
       yum:

@@ -1,0 +1,19 @@
+---
+
+  - name: Install base packages
+    yum: name={{ item.name }} state=present
+    with_items:
+      - sysstat
+      - htop
+      - atop
+      - strace
+      - lsof
+      - ntp
+      - ntpdate
+      - vim
+      - nc
+      - tmux
+      - wget
+      - unzip
+      - mlocate
+      - git
