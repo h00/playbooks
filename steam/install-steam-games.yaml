@@ -24,11 +24,10 @@
     # install game dir
     - name: Create Game Directory
       file:
-        path: /home/steam/steam/games/{{ item }}
+        path: /home/steam/steam/games
         state: directory
         owner: steam
         group: steam
-      with_items: "{{ games.split(',') }}"
 
     # create update script for games
     - name: Create update script for games
