@@ -1,3 +1,9 @@
+# usage: ansible-playbook -i steam.inv install-steam-games.yaml \
+#        -e "games=hellion,7days" --limit 'dev-steam-servers'
+#
+# games: If left empty, this just installs steamcmd. Otherwise, provide a 
+#        comma separated list of games defined in the games_dict below.
+#
 #
 
 ---

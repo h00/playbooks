@@ -1,7 +1,9 @@
+# usage: ansible-playbook -i steam.inv deploy-steam-server.yaml \
+#        -e "games=squad,7days" --limit 'dev-steam-servers'
 #
-# usage: ansible-playbook -i steam.inv
+# games: If left empty, this just installs steamcmd. Otherwise, provide a 
+#        comma separated list of games defined in the games_dict below.
 #
-# games:  list of games to be installed
 #
 
 ---
@@ -65,9 +67,7 @@
         state: directory
         owner: steam
         group: steam
-        recurse: yes    
+        recurse: yes
 
-    # install steam games
-#    - debug: msg="Install Steam App ID {{ games_dict[item] }}"
-#      when: games is defined
-#      with_items: "{{ games.split(',') }}"
+- include: install-steam-games.yaml
+  when: games is defined
