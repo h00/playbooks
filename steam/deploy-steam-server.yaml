@@ -65,7 +65,7 @@
         state: directory
         owner: steam
         group: steam
-        recursive: yes    
+        recurse: yes    
 
     # install steam games
 #    - debug: msg="Install Steam App ID {{ games_dict[item] }}"
