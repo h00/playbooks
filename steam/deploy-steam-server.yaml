@@ -6,8 +6,8 @@
 
 ---
 
-- name: install
-  hosts: *steam-servers
+- name: Install Steam Server
+  hosts: "*steam-servers"
   user: root
 
   vars:
