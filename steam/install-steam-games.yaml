@@ -19,4 +19,16 @@
       file:
         path: /home/steam/steam/games/{{ item }}
         state: directory
+        owner: steam
+        group: steam
+      with_items: "{{ games.split(',') }}"
+
+    # create update script for games
+    - name: Create update script for games
+      template: 
+        src: template/steam/update-server.sh.j2
+        dest: /home/steam/steam/update-{{ item }}.sh
+        owner: steam
+        group: steam
+        mode: 0755
       with_items: "{{ games.split(',') }}"
