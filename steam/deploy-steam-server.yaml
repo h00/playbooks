@@ -48,7 +48,9 @@
 
     # update perms on file
     - name: Set permissions on steam package
-      command: chown steam:steam /home/steam/steam/steamcmd_linux.tar.gz
+      file:
+        path: /home/steam/steam/steamcmd_linux.tar.gz
+        owner: steam
 
     # unpackage steam files
     - name: Unpackage steam files
