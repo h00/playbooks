@@ -1,0 +1,57 @@
+#
+# usage: ansible-playbook -i steam.inv
+#
+# games:  list of games to be installed
+#
+
+---
+
+- name: install
+  hosts: *steam-servers
+  user: root
+
+  vars:
+    games:
+      squad: 403240
+      hellion: 598850
+      7days: 294420
+
+  tasks:
+
+#    - include: 
+
+    - name: install necessary packages
+      service:
+        name: {{ item }}
+        state: installed
+        with_item:
+          - glibc.i686
+          - libgcc.i686
+
+    # create steam user
+    - name: Create steam user
+      user:
+        name: steam
+        state: present
+
+    # create steam dir
+    - name: Create steam directory
+      file:
+        path: /home/steam/steam
+        state: directory
+        mode: 0755
+
+    # get steam binaries
+    - name: Download steam binaries
+      shell: cd /home/steam/steam; wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz;
+
+    # update perms on file
+    - name: Set permissions on steam package
+      command: chown steam:steam /home/steam/steam/steamcmd_linux.tar.gz
+
+    # unpackage steam files
+    - name: Unpackage steam files
+      shell: cd /home/steam/steam; tar xvf steamcmd_linux.tar.gz
+
+    # install steam games
+
