@@ -24,7 +24,7 @@
     # install game dir
     - name: Create Game Directory
       file:
-        path: /home/steam/steam/games
+        path: /home/steam/Steam/games
         state: directory
         owner: steam
         group: steam
@@ -33,7 +33,7 @@
     - name: Create update script for games
       template: 
         src: templates/steam/update-server.sh.j2
-        dest: /home/steam/steam/update-{{ item }}.sh
+        dest: /home/steam/steamcmd/update-{{ item }}.sh
         owner: steam
         group: steam
         mode: 0755
@@ -42,7 +42,7 @@
     # install/update game
     # successful install = Success! App '403240' fully installed.
     - name: Install/Update games
-      shell: /home/steam/steam/update-{{ item }}.sh
+      shell: /home/steam/steamcmd/update-{{ item }}.sh
       register: install_games
       with_items: "{{ games.split(',') }}"
 

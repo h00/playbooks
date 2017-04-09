@@ -8,7 +8,7 @@
 
 ---
 
-- name: Install Steam Server
+- name: Install SteamCmd
   hosts: "*steam-servers"
   user: root
 
@@ -23,7 +23,7 @@
     # verify base packages are installed
     - include: install-base-packages.yaml
 
-    - name: install necessary packages
+    - name: Install necessary packages
       yum:
         name: "{{ item }}"
         state: installed
@@ -38,32 +38,32 @@
         state: present
 
     # create steam dir
-    - name: Create steam directory
+    - name: Create steamcmd directory
       file:
-        path: /home/steam/steam/games
+        path: /home/steam/steamcmd
         state: directory
         owner: steam
         group: steam
         mode: 0755
 
     # get steam binaries
-    - name: Download steam binaries
-      shell: cd /home/steam/steam; wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz;
+    - name: Download steamcmd package
+      shell: cd /home/steam/steamcmd; wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz;
 
     # update perms on file
-    - name: Set permissions on steam package
+    - name: Set permissions on steamcmd package
       file:
-        path: /home/steam/steam/steamcmd_linux.tar.gz
+        path: /home/steam/steamcmd/steamcmd_linux.tar.gz
         owner: steam
 
     # unpackage steam files
-    - name: Unpackage steam files
-      shell: cd /home/steam/steam; tar xvf steamcmd_linux.tar.gz
+    - name: Unpackage steamcmd files
+      shell: cd /home/steam/steamcmd; tar xvf steamcmd_linux.tar.gz
 
     # set permissions on steam files
-    - name: Set permissions on steam files
+    - name: Set permissions on steamcmd files
       file:
-        path: /home/steam/steam
+        path: /home/steam/steamcmd
         state: directory
         owner: steam
         group: steam
