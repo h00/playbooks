@@ -12,12 +12,6 @@
   hosts: "*steam-servers"
   user: root
 
-  vars:
-    games_dict:
-      squad: 403240
-      hellion: 598850
-      7days: 294420
-
   tasks:
 
     # verify base packages are installed

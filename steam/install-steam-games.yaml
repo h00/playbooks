@@ -18,6 +18,7 @@
       squad: 403240
       hellion: 598850
       7days: 294420
+      rust: 258550
 
   tasks:
 
@@ -42,7 +43,7 @@
     # install/update game
     # successful install = Success! App '403240' fully installed.
     - name: Install/Update games
-      shell: /home/steam/steamcmd/update-{{ item }}.sh
+      shell: /home/steam/steamcmd/update-{{ item }}-{{ games_dict[item] }}.sh
       register: install_games
       with_items: "{{ games.split(',') }}"
 
