@@ -19,6 +19,7 @@
       hellion: 598850
       7days: 294420
       rust: 258550
+      mordhau: 629800
 
   tasks:
 
@@ -34,7 +35,7 @@
     - name: Create update script for games
       template: 
         src: templates/steam/update-server.sh.j2
-        dest: /home/steam/steamcmd/update-{{ item }}.sh
+        dest: /home/steam/steamcmd/update-{{ item }}-{{ games_dict[item] }}.sh
         owner: steam
         group: steam
         mode: 0755

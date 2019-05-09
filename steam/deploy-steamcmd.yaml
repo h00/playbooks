@@ -18,12 +18,11 @@
     - include: install-base-packages.yaml
 
     - name: Install necessary packages
-      yum:
+      package:
         name: "{{ item }}"
-        state: installed
+        state: present
       with_items:
-        - glibc.i686
-        - libgcc.i686
+        - lib32gcc1
 
     # create steam user
     - name: Create steam user
