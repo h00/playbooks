@@ -1,0 +1,33 @@
+---
+# test if kubernetes installed
+- name: Search for Kube Packages
+  shell: dpkg -l | grep kubelet
+  register: kube_packages
+  ignore_errors: True
+
+- name: Install Google Apt Key
+  shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+  when: 'kube_packages.rc == 1'
+
+- name: Add Kube Apt Repo
+  shell: echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+  when: 'kube_packages.rc == 1'
+
+- name: Update Apt
+  shell: apt-get update
+  when: 'kube_packages.rc == 1'
+
+- name: Install Kubernetes Packages
+  package:
+    name={{ item }}
+    state=present
+  with_items:
+    - kubelet 
+    - kubeadm
+    - kubectl
+  when: 'kube_packages.rc == 1'
+
+- name: Mark Kube Packages For Hold
+  shell: apt-mark hold kubelet kubeadm kubectl
+  when: 'kube_packages.rc == 1'
+

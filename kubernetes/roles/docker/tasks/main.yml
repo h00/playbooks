@@ -1,0 +1,31 @@
+---
+# test if docker installed
+- name: Search for Docker Packages
+  shell: dpkg -l | grep docker-ce
+  register: docker_packages
+  ignore_errors: True
+
+- name: Install Apt Key
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  when: 'docker_packages.rc == 1'
+
+
+- name: Add Docker Apt Repo
+  shell: add-apt-repository \
+         "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  when: 'docker_packages.rc == 1'
+
+- name: Update Apt
+  shell: apt-get update
+  when: 'docker_packages.rc == 1'
+
+- name: Install Docker Packages
+  package:
+    name={{ item }}
+    state=present
+  with_items:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+  when: 'docker_packages.rc == 1'
+

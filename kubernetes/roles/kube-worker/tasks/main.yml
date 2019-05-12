@@ -1,0 +1,36 @@
+---
+# configure kube woker
+- name: Check for Existing Config
+  stat:
+    path: /etc/kubernetes/kubelet.conf
+  register: kube_config_file
+
+# get kube-master token
+- name: Get Master Current Token
+  shell: kubeadm token list | tail -1 | awk '{print $1}'
+  delegate_to: "{{ kube_master }}"
+  register: kube_master_token
+  when: 'kube_config_file.stat.exists == False'
+
+## FIX THIS - This ends up overwriting kube_master_token.stdout
+## with 'conditional not met', which results from the when statement in this task
+
+#- name: Generate New Token
+#  #shell: kubeadm token create
+#  shell: echo "PLACEHOLDER"
+#  delegate_to: "{{ kube_master }}"
+#  register: kube_master_token
+#  when:
+#    - 'kube_master_token.stdout == ""'
+#    - 'kube_config_file.stat.exists == False'
+
+# get kube-master cert hash
+- name: Get Kube Master Cert Hash
+  shell: openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+  delegate_to: "{{ kube_master }}"
+  register: kube_master_cert
+  when: 'kube_config_file.stat.exists == False'
+
+- name: Join Node to Cluster
+  shell: kubeadm join {{ kube_master }}:6443 --token {{ kube_master_token.stdout }} --discovery-token-ca-cert-hash sha256:{{ kube_master_cert.stdout }}
+  when: 'kube_config_file.stat.exists == False'
