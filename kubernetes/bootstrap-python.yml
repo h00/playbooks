@@ -1,0 +1,14 @@
+  - name: Check Existing Python
+    raw: which python
+    register: python
+    ignore_errors: True
+
+  - name: Get OS Distribution Type
+    raw: cat /proc/version
+    register: distribution
+
+  - name: Bootstrap a host without python2 installed
+    raw: apt-get --yes install python
+    when:
+      - '"Debian" in distribution.stdout or "Ubuntu" in distribution.stdout'
+      - 'python.rc > 0'

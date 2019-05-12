@@ -1,0 +1,21 @@
+#
+
+---
+- name: Bootstrap Host
+  hosts: "all"
+  user: root
+  gather_facts: False
+
+  tasks:
+    - include: bootstrap-python.yml
+
+    # verify base packages are installed
+    - include: install-base-packages.yaml
+
+- name: Install Kubernetes Master
+  hosts: "kube-workers"
+  user: root
+  roles:
+    - docker
+    - kube
+    - kube-worker
