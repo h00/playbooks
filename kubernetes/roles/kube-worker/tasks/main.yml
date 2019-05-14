@@ -34,3 +34,13 @@
 - name: Join Node to Cluster
   shell: kubeadm join {{ kube_master }}:6443 --token {{ kube_master_token.stdout }} --discovery-token-ca-cert-hash sha256:{{ kube_master_cert.stdout }}
   when: 'kube_config_file.stat.exists == False'
+
+- name: Update docker config to pushing and pulling of images from insecure location
+  shell: echo '{ "insecure-registries":["{{ kube_master }}:5000"] }' > /etc/docker/daemon.json
+  when: 'kube_config_file.stat.exists == False'
+
+- name: Restart Docker daemon to pickup config changes
+  service:
+    name: docker
+    state: restarted
+  when: 'kube_config_file.stat.exists == False'
