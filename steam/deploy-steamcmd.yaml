@@ -1,4 +1,4 @@
-# usage: ansible-playbook -i steam.inv deploy-steam-server.yaml \
+# usage: ansible-playbook -i steam.inv deploy-steamcmd.yaml \
 #        -e "games=squad,7days" --limit 'dev-steam-servers'
 #
 # games: If left empty, this just installs steamcmd. Otherwise, provide a 

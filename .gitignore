@@ -1,3 +1,5 @@
 global/inv
 global/new_key.pub
 .*.swp
+.venv
+*.retry

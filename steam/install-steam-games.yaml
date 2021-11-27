@@ -15,6 +15,7 @@
   vars:
     start_servers: false
     games_dict:
+      valheim: 896660
       squad: 403240
       hellion: 598850
       7days: 294420
